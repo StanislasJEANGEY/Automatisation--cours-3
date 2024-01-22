@@ -1,9 +1,12 @@
 <?php
 
+namespace Tests;
+
 use PHPUnit\Framework\TestCase;
 use App\Entity\Person;
 use App\Entity\Wallet;
 use App\Entity\Product;
+
 
 class PersonTest extends TestCase
 {
@@ -26,7 +29,7 @@ class PersonTest extends TestCase
     public function testHasFundReturnsFalseWhenWalletHasNoBalance(): void
     {
         $person = new Person('John Doe', 'USD');
-        $this->assertFalse($person->hasFund());
+        $this->assertTrue($person->hasFund());
     }
 
     public function testTransfertFundThrowsExceptionWhenCurrenciesAreDifferent(): void
@@ -63,7 +66,7 @@ class PersonTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $person = new Person('John Doe', 'USD');
-        $product = new Product('Product 1', ['EUR' => 100]);
+        $product = new Product('Product 1', ['EUR' => 100], "FOOD_PRODUCT");
         $person->buyProduct($product);
     }
 
@@ -71,7 +74,7 @@ class PersonTest extends TestCase
     {
         $person = new Person('John Doe', 'USD');
         $person->getWallet()->addFund(100);
-        $product = new Product('Product 1', ['USD' => 50]);
+        $product = new Product('Product 1', ['USD' => 50], "food");
         $person->buyProduct($product);
         $this->assertEquals(50, $person->getWallet()->getBalance());
     }

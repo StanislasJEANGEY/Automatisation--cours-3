@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Exception;
+
 class Product
 {
     private const FOOD_PRODUCT = 'food';
@@ -20,6 +22,7 @@ class Product
      * @param string $name The name of the product
      * @param array<string, float> $prices The prices of the product in different currencies
      * @param string $type The type of the product
+     * @throws Exception
      */
     public function __construct(string $name, array $prices, string $type)
     {
@@ -62,12 +65,12 @@ class Product
      * Set the type of the product.
      *
      * @param string $type The type of the product
-     * @throws \Exception If the type is invalid
+     * @throws Exception If the type is invalid
      */
     public function setType(string $type): void
     {
         if (!in_array($type, self::AVAILABLE_TYPES)) {
-            throw new \Exception('Invalid type');
+            throw new Exception('Invalid type');
         } else {
             $this->type = $type;
         }
@@ -132,17 +135,17 @@ class Product
      *
      * @param string $currency The currency
      * @return float The price of the product in the specified currency
-     * @throws \Exception If the currency is invalid or not available for this product
+     * @throws Exception If the currency is invalid or not available for this product
      */
     public function getPrice(string $currency): float
     {
         if (!in_array($currency, Wallet::AVAILABLE_CURRENCY)) {
-            throw new \Exception('Invalid currency');
+            throw new Exception('Invalid currency');
         }
         if (array_key_exists($currency, $this->prices)) {
             return $this->prices[$currency];
         } else {
-            throw new \Exception('Currency not available for this product');
+            throw new Exception('Currency not available for this product');
         }
     }
 }

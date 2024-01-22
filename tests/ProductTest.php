@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use PHPUnit\Framework\TestCase;
 use App\Entity\Product;
 use App\Entity\Wallet;
@@ -34,8 +36,16 @@ class ProductTest extends TestCase
 
     public function testSettingInvalidPrice(): void
     {
+        $this->expectException(\Error::class);
         $product = new Product('Product 1', ['USD' => -50], 'tech');
-        $this->assertEmpty($product->getPrices());
+        $test = $product->getPrices();
+    }
+
+    public function testSettingInvalidMultiPrice(): void
+    {
+        $this->expectException(\Error::class);
+        $product = new Product('Product 1', ['USD' => -50, 'EUR' => -50], 'tech');
+        $test = $product->getPrices();
     }
 
     public function testSettingValidPrice(): void
