@@ -62,4 +62,18 @@ class WalletTest extends TestCase
         $wallet = new Wallet('USD');
         $this->assertEquals('USD', $wallet->getCurrency());
     }
+
+    public function testSetBalanceThrowsExceptionWhenBalanceIsNegative(): void
+    {
+        $this->expectException(\Exception::class);
+        $wallet = new Wallet('USD');
+        $wallet->setBalance(-50);
+    }
+
+    public function testSetCurrencyThrowsExceptionWhenCurrencyIsNotAvailable(): void
+    {
+        $this->expectException(\Exception::class);
+        $wallet = new Wallet('USD');
+        $wallet->setCurrency('GBP');
+    }
 }

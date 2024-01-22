@@ -78,4 +78,22 @@ class PersonTest extends TestCase
         $person->buyProduct($product);
         $this->assertEquals(50, $person->getWallet()->getBalance());
     }
+
+    public function testDivideWalletThrowsExceptionWhenCurrenciesAreDifferent(): void
+    {
+        $this->expectException(\Exception::class);
+        $person1 = new Person('John Doe', 'USD');
+        $person2 = new Person('Jane Doe', 'EUR');
+        $person1->divideWallet([$person2]);
+    }
+
+    public function testTransfertFundThrowsExceptionWhenAmountIsGreaterThanBalance(): void
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Insufficient funds');
+        $person1 = new Person('John Doe', 'USD');
+        $person1->getWallet()->addFund(50);
+        $person2 = new Person('Jane Doe', 'USD');
+        $person1->transfertFund(100, $person2);
+    }
 }

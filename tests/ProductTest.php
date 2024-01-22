@@ -65,4 +65,17 @@ class ProductTest extends TestCase
         $product = new Product('Product 1', ['USD' => 50], 'tech');
         $this->assertEquals(0.2, $product->getTVA());
     }
+
+    public function testListCurrenciesReturnsAvailableCurrencies(): void
+    {
+        $product = new Product('Product 1', ['USD' => 50, 'EUR' => 45], 'tech');
+        $this->assertEquals(['USD', 'EUR'], $product->listCurrencies());
+    }
+
+    public function testGetPriceReturnsPriceInRequestedCurrency(): void
+    {
+        $product = new Product('Product 1', ['USD' => 50, 'EUR' => 45], 'tech');
+        $this->assertEquals(50, $product->getPrice('USD'));
+        $this->assertEquals(45, $product->getPrice('EUR'));
+    }
 }
